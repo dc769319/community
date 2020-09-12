@@ -1,0 +1,97 @@
+body {
+    background-color: #efefef;
+}
+
+.publish-area {
+    margin: 30px 30px 10px 30px;
+    background-color: white;
+    padding-bottom: 20px;
+}
+
+.media-text {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
+
+.media-body {
+    margin: 10px 0;
+}
+
+.media-body > span.user-item {
+    line-height: 40px;
+}
+
+.img-list {
+    height: 40px;
+    width: 40px;
+}
+
+.group-nav {
+    margin-top: 15px;
+}
+
+.ques-operator {
+    color: rgb(153, 153, 153);
+    font-size: 12px;
+}
+
+.ques-operator:hover {
+    text-decoration: none;
+}
+
+.error-message {
+    margin: 10px;
+}
+
+.text-comment {
+    margin-top: 5px;
+    resize: vertical;
+}
+
+.btn-comment {
+    float: right;
+}
+
+.site-icon {
+    padding: 10px;
+    margin-right: 5px;
+    color: #999;
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+.site-icon:hover {
+    background-color: #499ef3;
+    color: #fff;
+    cursor: pointer;
+}
+
+.comment-date {
+    color: #999;
+}
+
+.sub-comment-list {
+    margin-top: 15px;
+    border: #eee 1px solid;
+    border-radius: 5px;
+    padding: 15px 10px;
+}
+
+.list-related {
+    list-style: none;
+    padding-left: 0;
+}
+
+.com-tag {
+    margin: 5px 3px 0 0;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1.5;
+}
+.tab-pane {
+    white-space: normal;
+}
+.tag-selector {
+    margin-bottom: 5px;
+}

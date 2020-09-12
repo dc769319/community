@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Charles社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/stomp/socketjs.min.js"></script>
+    <script src="/js/stomp/stomp.min.js"></script>
+</head>
+<body>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-xs-12">
+        <div>
+            <button id="connect">连接</button>
+            <button id="disconnect" disabled="disabled">断开连接</button>
+        </div>
+        <div id="conversationDiv">
+            <label>输入你的名字</label><input type="text" id="name"/>
+            <button id="sendName">发送</button>
+            <p id="response"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(function () {
+        var stompClient = null;
+
+        $("#connect").click(function () {
+            connect();
+        });
+
+        $("#disconnect").click(function () {
+            disconnect();
+        });
+
+        $("#sendName").click(function () {
+            sendName();
+        });
+
+        function sendName() {
+            var name = $("#name").val();
+            stompClient.send("/app/receive-single", {}, JSON.stringify({"name": name}));
+        }
+
+        function setConnected(connected) {
+            document.getElementById("connect").disabled = connected;
+            document.getElementById("disconnect").disabled = !connected;
+            document.getElementById("conversationDiv").style.visibility = connected ? 'visible' : 'hidden';
+            $("#response").html();
+        }
+
+        function connect() {
+            // websocket的连接地址，此值等于WebSocketMessageBrokerConfigurer中registry.addEndpoint("/websocket-simple").withSockJS()配置的地址
+            var socket = new SockJS('/websocket-simple');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                setConnected(true);
+                console.log('Connected: ' + frame);
+                // 客户端订阅消息的目的地址：此值Point2PointController中被@SendTo("/queue/getResponse")注解的里配置的值，点对点须加上user前缀
+                stompClient.subscribe("/user/queue/getResponse", function (response) {
+                    var responseData = JSON.parse(response.body);
+                    showResponse(responseData["responseMessage"])
+                });
+            });
+        }
+
+        function showResponse(message) {
+            var response = $("#response");
+            response.html(message + "<br />" + response.html());
+        }
+
+        function disconnect() {
+            if (stompClient != null) {
+                stompClient.disconnect();
+                setConnected(false);
+            }
+            console.log("Disconnect");
+        }
+    });
+</script>

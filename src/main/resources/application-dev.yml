@@ -1,0 +1,4 @@
+server:
+  port: 8888
+github:
+  client-redirect-uri: http://localhost:8888/callback

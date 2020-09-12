@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>发布 - Charles社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/editor/css/editormd.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/editor/editormd.min.js"></script>
+    <script type="text/javascript" src="/js/publish.js"></script>
+</head>
+<body>
+<div th:insert="~{navigation :: nav}"></div>
+<div class="container-fluid publish-area">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
+            <h3><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起</h3>
+            <hr>
+            <form action="/publish" method="post">
+                <div class="form-group" th:if="${id != null}">
+                    <input type="hidden" name="id" th:value="${id}">
+                </div>
+                <div class="form-group" th:if="${errMsg != null}">
+                    <div class="alert alert-danger" role="alert" th:text="${errMsg}"></div>
+                </div>
+                <div class="form-group" th:if="${sucMsg != null}">
+                    <div class="alert alert-success" role="alert" th:text="${sucMsg}"></div>
+                </div>
+                <div class="form-group">
+                    <label for="title">问题标题（简单扼要）:</label>
+                    <input type="text" class="form-control" th:value="${title}" name="title" id="title"
+                           placeholder="问题标题...">
+                </div>
+                <div class="form-group">
+                    <label for="description">问题补充 (必填，请参照右侧提示):</label>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div id="editor-md">
+                        <textarea id="description" name="description" th:text="${description}" class="form-control"
+                                  rows="8"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tag">添加标签:</label>
+                    <input type="text" class="form-control" th:value="${tag}" name="tag" id="tag" placeholder="添加标签...">
+                </div>
+                <div class="row tag-selector">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" th:each="tagItem,tagStatus:${tagCache}"
+                                th:class="${tagStatus.first} ? 'active'">
+                                <a
+                                        th:href="'#panel' + ${tagStatus.index}"
+                                        th:attr="aria-controls='panel' + ${tagStatus.index},role='tab',data-toggle='tab'"
+                                        th:text="${tagItem.cateName}"
+                                        aria-controls="panel" role="tab" data-toggle="tab"></a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" th:each="tagItem2,tagStatus2:${tagCache}"
+                                 th:id="'panel' + ${tagStatus2.index}"
+                                 th:class="${tagStatus2.first} ? 'tab-pane active':'tab-pane'">
+                                <span class="label label-info glyphicon glyphicon-tags com-tag"
+                                      th:each="tagVal:${tagItem2.getTags()}" th:text="'  ' + ${tagVal}">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">确认发起</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            <h3>问题发起指南</h3>
+            <hr>
+            <div class="well well-lg">
+                <p>问题标题: 请用精简的语言描述您发布的问题，不超过25字</p>
+                <p>问题补充: 详细补充您的问题内容，并确保问题描述清晰直观, 并提供一些相关的资料</p>
+                <p>选择标签: 输入一个或者多个合适的标签，用逗号分割</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
