@@ -21,7 +21,7 @@ public class LinkedListReverse {
         node3.next = node4;
         node4.next = node5;
 
-        ListNode reverseHead = reverse2(node1);
+        ListNode reverseHead = reverse3(node1);
 
         System.out.println("Head Node: " + reverseHead.val);
         ListNode curNode = reverseHead;
@@ -101,5 +101,22 @@ public class LinkedListReverse {
         }
 
         return pre;
+    }
+
+    /**
+     * 递归方式解决
+     *
+     * @param head 头节点
+     * @return 头节点指针
+     */
+    public static ListNode reverse3(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode next = head.next;
+        ListNode reverse = reverse3(next);
+        next.next = head;
+        head.next = null;
+        return reverse;
     }
 }
